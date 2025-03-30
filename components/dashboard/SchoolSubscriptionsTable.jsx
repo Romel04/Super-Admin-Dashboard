@@ -354,7 +354,7 @@ export default function SchoolSubscriptionsTable({ data }) {
             <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
             <AlertDialogDescription>
               This action cannot be undone. This will permanently delete{" "}
-              <span className="font-semibold">{selectedSchool?.schoolName}</span>'s
+              <span className="font-semibold">{selectedSchool?.schoolName}</span>&apos;s
               subscription and remove all related data.
             </AlertDialogDescription>
           </AlertDialogHeader>
