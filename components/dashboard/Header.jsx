@@ -11,26 +11,28 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { MoonIcon, SunIcon, UserIcon, MenuIcon } from "lucide-react"; // Import MenuIcon
+import { MoonIcon, SunIcon, UserIcon, MenuIcon } from "lucide-react";
 import { useTheme } from "next-themes";
 
-export default function Header({ toggleSidebar }) { // Accept toggleSidebar as prop
+export default function Header({ toggleSidebar, isMobile }) {
   const { user, logout } = useAuth();
   const { setTheme } = useTheme();
 
   return (
     <header className="border-b bg-background h-16 flex justify-between items-center px-3 sm:px-6 sticky top-0 z-10">
-        <div className="flex gap-4 ">
-            <Button onClick={toggleSidebar} variant="outline" size="icon" className="mt-2 sm:mt-0"> {/* Button to toggle sidebar */}
-          <MenuIcon className="h-5 w-5" />
-        </Button>
-      <div className="flex-1">
-        <h1 className="text-xl font-bold">Super Admin Dashboard</h1>
-      </div>
+      <div className="flex gap-4 items-center">
+        {/* Only show hamburger menu on mobile */}
+        {isMobile && (
+          <Button onClick={toggleSidebar} variant="outline" size="icon" className="md:hidden">
+            <MenuIcon className="h-5 w-5" />
+          </Button>
+        )}
+        <div>
+          <h1 className="text-xl font-bold">Super Admin Dashboard</h1>
         </div>
-        
+      </div>
+      
       <div className="flex items-center gap-4">
-        
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" size="icon">

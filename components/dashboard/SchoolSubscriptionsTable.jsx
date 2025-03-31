@@ -2,6 +2,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import {
   flexRender,
   getCoreRowModel,
@@ -48,10 +49,12 @@ import {
   ChevronDown,
   ChevronUp,
   ChevronsUpDown,
+  Plus,
 } from "lucide-react";
 import { toast } from "sonner";
 
 export default function SchoolSubscriptionsTable({ data }) {
+  const router = useRouter();
   const [sorting, setSorting] = useState([]);
   const [columnFilters, setColumnFilters] = useState([]);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
@@ -226,8 +229,13 @@ export default function SchoolSubscriptionsTable({ data }) {
   };
 
   const handleEdit = (school) => {
-    toast.info(`Editing ${school.schoolName}`);
-    // Implementation for edit action
+    // Navigate to edit page with the school ID
+    router.push(`/dashboard/school-subscriptions/edit/${school.id}`);
+  };
+  
+  const handleCreateNew = () => {
+    // Navigate to create page
+    router.push("/dashboard/school-subscriptions/create");
   };
 
   const handleDeleteClick = (school) => {
@@ -245,7 +253,7 @@ export default function SchoolSubscriptionsTable({ data }) {
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between flex-col sm:flex-row  gap-4">
         <Input
           placeholder="Filter schools..."
           value={table.getColumn("schoolName")?.getFilterValue() || ""}
@@ -254,7 +262,11 @@ export default function SchoolSubscriptionsTable({ data }) {
           }
           className="max-w-sm"
         />
-        <Button>Add New School</Button>
+        
+        <Button onClick={handleCreateNew} className="w-full sm:w-auto">
+          <Plus className="mr-2 h-4 w-4" />
+          Add New School
+        </Button>
       </div>
 
       {/* Add an outer container with overflow auto to create scrollbar */}
