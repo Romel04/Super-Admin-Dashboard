@@ -150,7 +150,7 @@ const mockData = [
   }
 ];
 
-export default function SchoolSubscriptionsPage() {
+export default function MadrasaSubscriptionsPage() {
   const [loading, setLoading] = useState(true);
   const [subscriptionsData, setSubscriptionsData] = useState([]);
 

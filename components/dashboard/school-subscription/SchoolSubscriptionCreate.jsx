@@ -1,4 +1,4 @@
-// app/dashboard/school-subscriptions/create/page.jsx
+// app/dashboard/madrasa-subscriptions/create/page.jsx
 "use client";
 
 import { useState } from "react";
@@ -25,10 +25,10 @@ import { format } from "date-fns";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 
-export default function CreateSchoolSubscription() {
+export default function CreateMadrasaSubscription() {
   const router = useRouter();
   const [formData, setFormData] = useState({
-    schoolName: "",
+    madrasaName: "",
     planName: "",
     price: "",
     email: "",
@@ -64,17 +64,17 @@ export default function CreateSchoolSubscription() {
     e.preventDefault();
     
     // Validation
-    if (!formData.schoolName || !formData.planName || !formData.price || !formData.email) {
+    if (!formData.madrasaName || !formData.planName || !formData.price || !formData.email) {
       toast.error("Please fill in all required fields");
       return;
     }
     
     // Process form data - in a real app this would send to an API
-    toast.success("School subscription created successfully!");
+    toast.success("madrasa subscription created successfully!");
     console.log("Form data submitted:", formData);
     
     // Navigate back to subscriptions list
-    router.push("/dashboard/school-subscriptions");
+    router.push("/dashboard/madrasa-subscriptions");
   };
 
   const handleCancel = () => {
@@ -83,7 +83,7 @@ export default function CreateSchoolSubscription() {
 
   return (
     <div className="container mx-auto py-6">
-      <h1 className="text-2xl font-bold mb-6">Create New School Subscription</h1>
+      <h1 className="text-2xl font-bold mb-6">Create New Madrasa Subscription</h1>
       
       <Card>
         <CardHeader>
@@ -92,15 +92,15 @@ export default function CreateSchoolSubscription() {
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* School Name */}
+              {/* madrasa Name */}
               <div className="space-y-2">
-                <Label htmlFor="schoolName">School Name *</Label>
+                <Label htmlFor="madrasaName">Madrasa Name *</Label>
                 <Input
-                  id="schoolName"
-                  name="schoolName"
-                  value={formData.schoolName}
+                  id="madrasaName"
+                  name="madrasaName"
+                  value={formData.madrasaName}
                   onChange={handleChange}
-                  placeholder="Enter school name"
+                  placeholder="Enter madrasa name"
                   required
                 />
               </div>
@@ -149,7 +149,7 @@ export default function CreateSchoolSubscription() {
                   type="email"
                   value={formData.email}
                   onChange={handleChange}
-                  placeholder="school@example.com"
+                  placeholder="madrasa@example.com"
                   required
                 />
               </div>
@@ -241,7 +241,7 @@ export default function CreateSchoolSubscription() {
               </div>
             </div>
             
-            <div className="flex justify-end gap-4 pt-4">
+            <div className="flex flex-col sm:flex-row sm:justify-end gap-4 pt-4">
               <Button variant="outline" type="button" onClick={handleCancel}>
                 Cancel
               </Button>

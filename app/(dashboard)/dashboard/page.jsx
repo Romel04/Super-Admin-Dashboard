@@ -1,4 +1,3 @@
-// app/(dashboard)/dashboard/page.js
 "use client";
 
 import { useEffect } from "react";
@@ -38,7 +37,7 @@ export default function DashboardPage() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">
-              Total Schools
+              Total Madrasa
             </CardTitle>
             <School className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
@@ -64,36 +63,38 @@ export default function DashboardPage() {
             </p>
           </CardContent>
         </Card>
-        
-        {/* <Card>
+
+        {/* New Card: Expired Subscription */}
+        <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">
-              Total Users
+              Expired Subscription
+            </CardTitle>
+            <CreditCard className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">16</div>
+            <p className="text-xs text-muted-foreground">
+              -4 from last month
+            </p>
+          </CardContent>
+        </Card>
+
+        {/* New Card: Total Affiliation */}
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">
+              Total Affiliation
             </CardTitle>
             <Users className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">2,350</div>
+            <div className="text-2xl font-bold">75</div>
             <p className="text-xs text-muted-foreground">
-              +180 from last month
+              +10 from last month
             </p>
           </CardContent>
         </Card>
-        
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">
-              Revenue
-            </CardTitle>
-            <TrendingUp className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">$48,395</div>
-            <p className="text-xs text-muted-foreground">
-              +14.2% from last month
-            </p>
-          </CardContent>
-        </Card> */}
       </div>
     </div>
   );

@@ -1,4 +1,4 @@
-// app/dashboard/school-subscriptions/edit/[id]/page.jsx
+// app/dashboard/madrasa-subscriptions/edit/[id]/page.jsx
 "use client";
 
 import { useState, useEffect } from "react";
@@ -24,14 +24,14 @@ import { CalendarIcon, Loader2 } from "lucide-react";
 import { format, parse } from "date-fns";
 import { toast } from "sonner";
 
-export default function EditSchoolSubscription() {
+export default function EditmadrasaSubscription() {
   const router = useRouter();
   const params = useParams();
   const { id } = params;
   
   const [loading, setLoading] = useState(true);
   const [formData, setFormData] = useState({
-    schoolName: "",
+    madrasaName: "",
     planName: "",
     price: "",
     email: "",
@@ -52,7 +52,7 @@ export default function EditSchoolSubscription() {
         // Mock data - in a real app, this would come from an API
         const mockData = {
           id: id,
-          schoolName: "Springfield Elementary School",
+          madrasaName: "Springfield Elementary madrasa",
           planName: "Premium",
           price: "1299.99",
           email: "principal@springfield.edu",
@@ -70,7 +70,7 @@ export default function EditSchoolSubscription() {
         const expiryDate = parse(mockData.dates.expiryDate, "MM/dd/yyyy", new Date());
         
         setFormData({
-          schoolName: mockData.schoolName,
+          madrasaName: mockData.madrasaName,
           planName: mockData.planName,
           price: mockData.price,
           email: mockData.email,
@@ -117,17 +117,17 @@ export default function EditSchoolSubscription() {
     e.preventDefault();
     
     // Validation
-    if (!formData.schoolName || !formData.planName || !formData.price || !formData.email) {
+    if (!formData.madrasaName || !formData.planName || !formData.price || !formData.email) {
       toast.error("Please fill in all required fields");
       return;
     }
     
     // Process form data - in a real app this would update via an API
-    toast.success("School subscription updated successfully!");
+    toast.success("madrasa subscription updated successfully!");
     console.log("Updated form data:", formData);
     
     // Navigate back to subscriptions list
-    router.push("/dashboard/school-subscriptions");
+    router.push("/dashboard/madrasa-subscriptions");
   };
 
   const handleCancel = () => {
@@ -147,7 +147,7 @@ export default function EditSchoolSubscription() {
 
   return (
     <div className="container mx-auto py-6">
-      <h1 className="text-2xl font-bold mb-6">Edit School Subscription</h1>
+      <h1 className="text-2xl font-bold mb-6">Edit Madrasa Subscription</h1>
       
       <Card>
         <CardHeader>
@@ -156,15 +156,15 @@ export default function EditSchoolSubscription() {
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* School Name */}
+              {/* madrasa Name */}
               <div className="space-y-2">
-                <Label htmlFor="schoolName">School Name *</Label>
+                <Label htmlFor="madrasaName">Madrasa Name *</Label>
                 <Input
-                  id="schoolName"
-                  name="schoolName"
-                  value={formData.schoolName}
+                  id="madrasaName"
+                  name="madrasaName"
+                  value={formData.madrasaName}
                   onChange={handleChange}
-                  placeholder="Enter school name"
+                  placeholder="Enter madrasa name"
                   required
                 />
               </div>
@@ -213,7 +213,7 @@ export default function EditSchoolSubscription() {
                   type="email"
                   value={formData.email}
                   onChange={handleChange}
-                  placeholder="school@example.com"
+                  placeholder="madrasa@example.com"
                   required
                 />
               </div>
@@ -305,7 +305,7 @@ export default function EditSchoolSubscription() {
               </div>
             </div>
             
-            <div className="flex justify-end gap-4 pt-4">
+            <div className="flex flex-col sm:flex-row sm:justify-end gap-4 pt-4">
               <Button variant="outline" type="button" onClick={handleCancel}>
                 Cancel
               </Button>

@@ -1,7 +1,7 @@
 // components/dashboard/SchoolSubscriptionsTable.jsx
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import {
   flexRender,
@@ -59,6 +59,14 @@ export default function SchoolSubscriptionsTable({ data }) {
   const [columnFilters, setColumnFilters] = useState([]);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [selectedSchool, setSelectedSchool] = useState(null);
+  const [statusFilter, setStatusFilter] = useState("All");
+
+  const filteredData = useMemo(() => {
+    return data.filter((school) => {
+      if (statusFilter === "All") return true;
+      return school.status === statusFilter;
+    });
+  }, [data, statusFilter]);
 
   // Define column sizes
   const columns = [
@@ -69,7 +77,7 @@ export default function SchoolSubscriptionsTable({ data }) {
       cell: ({ row }) => <div>{row.index + 1}</div>,
     },
     {
-      accessorKey: "schoolName",
+      accessorKey: "madrasaName",
       header: ({ column }) => {
         return (
           <Button
@@ -77,7 +85,7 @@ export default function SchoolSubscriptionsTable({ data }) {
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
             className="whitespace-nowrap"
           >
-            School Name
+            Madrasa Name
             {column.getIsSorted() === "asc" ? (
               <ChevronUp className="ml-2 h-4 w-4" />
             ) : column.getIsSorted() === "desc" ? (
@@ -116,7 +124,24 @@ export default function SchoolSubscriptionsTable({ data }) {
     },
     {
       accessorKey: "dates",
-      header: "Dates",
+      header: ({ column }) => {
+        return (
+          <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+            className="whitespace-nowrap"
+          >
+            Dates
+            {column.getIsSorted() === "asc" ? (
+              <ChevronUp className="ml-2 h-4 w-4" />
+            ) : column.getIsSorted() === "desc" ? (
+              <ChevronDown className="ml-2 h-4 w-4" />
+            ) : (
+              <ChevronsUpDown className="ml-2 h-4 w-4" />
+            )}
+          </Button>
+        );
+      },
       size: 140,
       cell: ({ row }) => {
         const dates = row.getValue("dates");
@@ -130,7 +155,24 @@ export default function SchoolSubscriptionsTable({ data }) {
     },
     {
       accessorKey: "lastUpgrade",
-      header: "Last Upgrade",
+      header: ({ column }) => {
+        return (
+          <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+            className="whitespace-nowrap"
+          >
+            Last Upgrade
+            {column.getIsSorted() === "asc" ? (
+              <ChevronUp className="ml-2 h-4 w-4" />
+            ) : column.getIsSorted() === "desc" ? (
+              <ChevronDown className="ml-2 h-4 w-4" />
+            ) : (
+              <ChevronsUpDown className="ml-2 h-4 w-4" />
+            )}
+          </Button>
+        );
+      },
       size: 120,
       cell: ({ row }) => <div className="whitespace-nowrap">{row.getValue("lastUpgrade")}</div>,
     },
@@ -141,7 +183,7 @@ export default function SchoolSubscriptionsTable({ data }) {
       cell: ({ row }) => {
         const status = row.getValue("status");
         let badgeClass = "bg-gray-500";
-        
+
         if (status === "Active") {
           badgeClass = "bg-green-500";
         } else if (status === "Expired") {
@@ -149,7 +191,7 @@ export default function SchoolSubscriptionsTable({ data }) {
         } else if (status === "Pending") {
           badgeClass = "bg-yellow-500";
         }
-        
+
         return (
           <Badge variant="outline" className={`${badgeClass} text-white whitespace-nowrap`}>
             {status}
@@ -163,7 +205,7 @@ export default function SchoolSubscriptionsTable({ data }) {
       size: 80,
       cell: ({ row }) => {
         const school = row.original;
-        
+
         return (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -203,9 +245,9 @@ export default function SchoolSubscriptionsTable({ data }) {
     },
   ];
 
-  // Set up table with column sizes
+   // Set up table with column sizes and filters
   const table = useReactTable({
-    data,
+    data: filteredData, // Use the memoized filtered data
     columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -223,19 +265,23 @@ export default function SchoolSubscriptionsTable({ data }) {
     },
   });
 
+  const handleStatusFilterChange = (status) => {
+    setStatusFilter(status);
+  };
+
   const handleView = (school) => {
-    toast.info(`Viewing ${school.schoolName}`);
+    toast.info(`Viewing ${school.madrasaName}`);
     // Implementation for view action
   };
 
   const handleEdit = (school) => {
     // Navigate to edit page with the school ID
-    router.push(`/dashboard/school-subscriptions/edit/${school.id}`);
+    router.push(`/dashboard/madrasa-subscriptions/edit/${school.id}`);
   };
-  
+
   const handleCreateNew = () => {
     // Navigate to create page
-    router.push("/dashboard/school-subscriptions/create");
+    router.push("/dashboard/madrasa-subscriptions/create");
   };
 
   const handleDeleteClick = (school) => {
@@ -245,7 +291,7 @@ export default function SchoolSubscriptionsTable({ data }) {
 
   const handleDelete = () => {
     if (selectedSchool) {
-      toast.success(`Deleted ${selectedSchool.schoolName}`);
+      toast.success(`Deleted ${selectedSchool.madrasaName}`);
       // Implementation for delete action
       setDeleteDialogOpen(false);
     }
@@ -255,22 +301,60 @@ export default function SchoolSubscriptionsTable({ data }) {
     <div className="space-y-4">
       <div className="flex items-center justify-between flex-col sm:flex-row  gap-4">
         <Input
-          placeholder="Filter schools..."
-          value={table.getColumn("schoolName")?.getFilterValue() || ""}
+          placeholder="Filter madrasa..."
+          value={table.getColumn("madrasaName")?.getFilterValue() || ""}
           onChange={(event) =>
-            table.getColumn("schoolName")?.setFilterValue(event.target.value)
+            table.getColumn("madrasaName")?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
         />
-        
+
+        <div className="flex flex-col sm:flex-row w-full sm:w-auto gap-4">
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="outline" className="w-full sm:w-auto">
+              Filter Status <ChevronDown className="ml-2 h-4 w-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent>
+            <DropdownMenuLabel>Status</DropdownMenuLabel>
+            <DropdownMenuItem
+              onClick={() => handleStatusFilterChange("All")}
+              className={statusFilter === "All" ? "bg-gray-200" : ""}
+            >
+              All
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => handleStatusFilterChange("Active")}
+              className={statusFilter === "Active" ? "bg-gray-200" : ""}
+            >
+              Active
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => handleStatusFilterChange("Expired")}
+              className={statusFilter === "Expired" ? "bg-gray-200" : ""}
+            >
+              Expired
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => handleStatusFilterChange("Pending")}
+              className={statusFilter === "Pending" ? "bg-gray-200" : ""}
+            >
+              Pending
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+
         <Button onClick={handleCreateNew} className="w-full sm:w-auto">
           <Plus className="mr-2 h-4 w-4" />
-          Add New School
+          Add New Madrasa
         </Button>
+
+        </div>
       </div>
 
-      {/* Add an outer container with overflow auto to create scrollbar */}
-      <div className="rounded-md border">
+           {/* Add an outer container with overflow auto to create scrollbar */}
+           <div className="rounded-md border">
         <div className="overflow-x-auto" style={{ width: '100%' }}>
           <Table>
             <TableHeader>
@@ -366,7 +450,7 @@ export default function SchoolSubscriptionsTable({ data }) {
             <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
             <AlertDialogDescription>
               This action cannot be undone. This will permanently delete{" "}
-              <span className="font-semibold">{selectedSchool?.schoolName}</span>&apos;s
+              <span className="font-semibold">{selectedSchool?.madrasaName}</span>&apos;s
               subscription and remove all related data.
             </AlertDialogDescription>
           </AlertDialogHeader>

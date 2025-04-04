@@ -25,8 +25,8 @@ const mainNavItems = [
     icon: LayoutDashboard,
   },
   {
-    title: "School Subscriptions",
-    href: "/dashboard/school-subscriptions",
+    title: "Madrasa Subscriptions",
+    href: "/dashboard/madrasa-subscriptions",
     icon: School,
   },
   {
